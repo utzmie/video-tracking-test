@@ -21,26 +21,24 @@
 
 	<script>
 
+		var localStream;
+
 		var result = document.getElementById('result');
 
 		function hasGetUserMedia() {
-			// Note: Opera builds are unprefixed.
-			return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-			navigator.mozGetUserMedia || navigator.msGetUserMedia);
+			navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+			.then(ok, ng);
 		}
 
-		// if (hasGetUserMedia()) {
-		// 	result.append("ok");
-		// } else {
-		// 	result.append("not supportedd...");
-		// }
+		function ok() {
+			result.append("ok");
+		}
+		function ng() {
+			result.append("not supportedd...");
+		}
 
 		window.onload = function() {
-			if (hasGetUserMedia()) {
-				result.append("ok");
-			} else {
-				result.append("not supportedd...");
-			}
+			hasGetUserMedia();
 		}
 
 
