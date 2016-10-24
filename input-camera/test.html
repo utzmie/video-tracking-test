@@ -2,41 +2,24 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
-	<title>Input Camera</title>
+	<title>Supported?</title>
 	<link rel="stylesheet" href="../style.css">
-	<style>
-		video {
-			background-color: #ccc;
-			margin: 2.618em 0;
-		}
-		form {
-			text-align: center;
-		}
-	</style>
 </head>
 <body>
 	<div class="container">
 
-		<h1>カメラの映像を入力</h1>
+		<h1>サポートされているか</h1>
 
-		<div id="video-input-container">
-			<video id="video-input" loop autoplay muted width="640" height="360"></video>
-			<form id="control"></form>
-		</div>
-
-		<div id="video-output-container">
-			<canvas id="video-output" width="640" height="360"></canvas>
+		<div style="text-align: center;">
+			<p>navigator.getUserMedia 使えるか？</p>
+			<div id="result" style="font-size: 30px"></div>
 		</div>
 
 	</div><!-- /container -->
 
 	<script>
 
-		var video  = document.getElementById('video-input');
-		var canvas = document.getElementById('video-output');
-		var cc     = canvas.getContext('2d');
-
-		// context.drawImage(video, 0, 0, 640, 360);
+		var result = document.getElementById('result');
 
 		function hasGetUserMedia() {
 			// Note: Opera builds are unprefixed.
@@ -45,10 +28,9 @@
 		}
 
 		if (hasGetUserMedia()) {
-			// Good to go!
-			alert('ok');
+			result.append("ok");
 		} else {
-			alert('getUserMedia() is not supported in your browser');
+			result.append("not supportedd...");
 		}
 
 
