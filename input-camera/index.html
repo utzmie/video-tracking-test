@@ -20,9 +20,7 @@
 		<h1>カメラの映像を入力</h1>
 
 		<div id="video-input-container">
-			<video id="video-input" loop autoplay muted width="640" height="360">
-				<source src="gay.mp4">
-			</video>
+			<video id="video-input" loop autoplay muted width="640" height="360"></video>
 			<form id="control"></form>
 		</div>
 
@@ -86,7 +84,7 @@
 			console.log("cam", cam);
 			var button = document.createElement("input");
 			button.type = "button";
-			if cam.name {
+			if (cam.name) {
 				button.value = cam.name;
 			} else {
 				button.value = "Camera"
