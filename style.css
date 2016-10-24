@@ -1,0 +1,56 @@
+:root {
+	box-sizing: border-box;
+}
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+body, button, input {
+	font-family: -apple-system, BlinkMacSystemFont, Helvetica, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+}
+
+body {
+	line-height: 1.618;
+	font-size: 100%;
+}
+
+/* layout */
+.container {
+	max-width: 640px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 40px;
+	padding-bottom: 40px;
+}
+
+/* heading */
+h1 {
+	text-align: center;
+	font-weight: normal;
+}
+
+/* button */
+.button {
+	position: relative;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	font-size: 16px;
+	border: 0;
+	outline: 0;
+	margin: 0 1em;
+	padding: .5em 1em;
+	border-radius: 4px;
+	box-shadow: 0 4px 0 #660000;
+	background-color: #cc0000;
+	color: #fff;
+}
+.button:active {
+	top: 4px;
+	box-shadow: none;
+}
