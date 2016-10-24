@@ -4,14 +4,14 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Input Camera</title>
+	<title>Input Video</title>
 	<link rel="stylesheet" href="../style.css">
 	<style>
 		video {
 			background-color: #ccc;
 			margin: 2.618em 0;
 		}
-		form {
+		#video-input-container {
 			text-align: center;
 		}
 	</style>
@@ -20,109 +20,44 @@
 	<div class="container">
 
 		<h1>カメラの映像を入力</h1>
-
 		<div id="video-input-container">
-			<video id="video-input" loop autoplay muted width="640" height="360"></video>
-			<form id="control"></form>
+			<video id="video" width="640" height="360" autoplay muted></video>
+			<!-- autoplay属性がないと映像が止まる -->
+			<button id="button" class="button">Start</button>
+
+			<p style="margin: 2em 0;">Firefox, Chrome 以外では動かないかもしれません</p>
 		</div>
 
-		<p style="text-align: center; margin: 2em 0;">Firefox, Chrome 以外では動かないかもしれません</p>
 
 	</div><!-- /container -->
 
 	<script>
 
-		// 参考： http://qiita.com/shinido/items/a80e5706f466b81646e2
-		navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-		var URL = window.URL || window.webkitURL;
-		var RTCPeerConnection = window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
-		var RTCSessionDescription = window.RTCSessionDescription || window.webkitRTCSessionDescription || window.mozRTCSessionDescription;
-		var RTCIceCandidate = window.RTCIceCandidate || window.webkitRTCIceCandidate || window.mozRTCIceCandidate;
+		// 参考： https://html5experts.jp/mganeko/19728/
 
+		let video = document.getElementById('video');
+		let localStream;
 
-		var mediaC = {
-			'mandatory': {
-				'OfferToReceiveAudio': true,
-				'OfferToReceiveVideo': true
-			}
-		};
-		var ice_config = {
-			"iceServers": []
-		};
-
-
-		// input video
-		function getVideoSources(callback) {
-			if (!navigator.mediaDevices) {
-				console.log("MediaStreamTrack");
-				MediaStreamTrack.getSources(function(cams) {
-					cams.forEach(function(c, i, a) {
-						if (c.kind != 'video') return;
-						callback({
-							name: c.facing,
-							id: c.id
-						});
-					});
-				});
-			} else {
-				navigator.mediaDevices.enumerateDevices().then(function(cams) {
-					cams.forEach(function(c, i, a) {
-						console.log("mediaDevices", c);
-						if (c.kind != 'videoinput') return;
-						callback({
-							name: c.label,
-							id: c.deviceId
-						});
-					});
-				});
-			}
+		function startVideo() {
+			navigator.mediaDevices.getUserMedia({
+				video: {
+					width: 640,
+					height: 360
+				},
+				audio: false,
+			}).then(function (stream) { // success
+				localStream = stream;
+				video.src = window.URL.createObjectURL(localStream);
+			}).catch(function (error) { // error
+				console.error('mediaDevice.getUserMedia() error:', error);
+				return;
+			});
 		}
 
-	</script>
-
-	<script>
-		var video = document.getElementById("video-input");
-		var control = document.getElementById("control");
-
-		getVideoSources(function(cam) {
-			console.log("cam", cam);
-			var button = document.createElement("input");
-			button.type = "button";
-			button.className = "button";
-			if (cam.name) {
-				button.value = cam.name;
-			} else {
-				button.value = "Camera";
-			}
-			button.onclick = getMain(cam.id);
-			control.appendChild(button);
-			console.log('add button');
+		document.getElementById('button').addEventListener('click', function() {
+			startVideo();
 		});
 
-		function getMain(cam_id) {
-			return function() {
-				main(cam_id);
-			};
-		}
-
-		function main(cam_id) {
-			navigator.getUserMedia({
-				audio: false,
-				video: {
-					optional: [
-						{ sourceId: cam_id}
-					]
-				}
-			}, function(stream) { // success
-				console.log("Start Video", stream);
-				localStream = stream;
-				video.src = URL.createObjectURL(stream);
-				video.play();
-				video.volume = 0;
-			}, function(e) { // error
-				console.error("Error on start video: " + e.code);
-			});
-		};
 	</script>
 </body>
 </html>
