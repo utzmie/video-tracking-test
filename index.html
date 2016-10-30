@@ -1,18 +1,93 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Camera</title>
-	<link rel="stylesheet" href="./style.css">
+<meta charset="UTF-8">
+<title>てすと</title>
+<script type="text/javascript" src="./scripts/ccv.js"></script>
+<script type="text/javascript" src="./scripts/face.js"></script>
+<style>
+	video {
+		display: none;
+		
+	}
+</style>
 </head>
 <body>
-	<div class="container">
-		<h1>カメラまわりで遊ぶ</h1>
-		<ul>
-			<li><a href="./input-camera/">カメラ映像の入力テスト</a></li>
-		</ul>
-	</div><!-- /container -->
+<h1>PCのWebカメラで顔認証＋ビリー合成</h1>
+<ul>
+	<li>たぶんFirefoxとChromeのみ（カメラ許可してください）</li>
+	<li>顔が認識されるとビリーが登場します。</li>
+	<li>映像がサーバーに送信されるわけじゃないので安心して使ってください。</li>
+	<li>メガネの光の反射とかが原因で認識されないことがあるぞ</li>
+	<li>なんかよくわからんけど、ほぼ下からパクりました。<br>
+		http://alumi.hateblo.jp/entry/2012/03/22/163845</li>
+</ul>
+
+<div id="contents">
+	<video id="video" autoplay></video>
+	<canvas id="canvas"></canvas>
+</div>
+
+<script type="text/javascript">
+	var input;
+	var output;
+	var width;
+	var height;
+
+	var image = new Image();
+		image.src = "./face-billy.png";
+
+	initialize = function() {
+		input  = document.getElementById("video");
+		output = document.getElementById("canvas");
+		navigator.mediaDevices.getUserMedia({
+			video: true,
+			audio: false,
+		}).then(function (stream) { // success
+
+			localStream = stream;
+			input.src = window.URL.createObjectURL(localStream);
+			setInterval(draw, 300);
+
+		}).catch(function (error) { // error
+			alert("onFailedStream");
+		});
+	}
+
+	var draw = function () {
+
+		width = input.videoWidth;
+		height = input.videoHeight;
+
+		var canvas = document.createElement('canvas');
+		canvas.width = width;
+		canvas.height = height;
+
+		var context = canvas.getContext('2d');
+		context.drawImage(input, 0, 0, width, height);
+
+		output.width = width;
+		output.height = height;
+
+		var context2 = output.getContext('2d');
+		context2.drawImage(input, 0, 0, width, height);
+
+		var comp = ccv.detect_objects(
+			{
+				"canvas" : ccv.grayscale(canvas),
+				"cascade" : cascade,
+				"interval" : 5,
+				"min_neighbors" : 1
+			}
+		);
+	
+		for(var i=0;i < comp.length;i++) {
+			context2.drawImage(image, comp[i].x-30, comp[i].y-30, comp[i].width+60, comp[i].height+60);
+		}
+	}
+
+	setTimeout(initialize, 1);
+
+</script>
 </body>
 </html>
