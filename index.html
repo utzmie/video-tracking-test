@@ -35,7 +35,7 @@
 		http://alumi.hateblo.jp/entry/2012/03/22/163845</li>
 </ul>
 
-<div id="contents">
+<div id="contents" style="color: #cc0000;">
 	<video id="video" autoplay></video>
 	<canvas id="canvas"></canvas>
 </div>
@@ -60,7 +60,8 @@
 			input.src = window.URL.createObjectURL(localStream);
 			setInterval(draw, 300);
 		}).catch(function (error) { // error
-			alert("onFailedStream");
+			// var contents = document.getElementById('contents');
+			alert('エラー。たぶんカメラがないとか許可してないとか。');
 		});
 	}
 
