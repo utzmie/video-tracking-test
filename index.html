@@ -1,16 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>てすと</title>
-<script type="text/javascript" src="./scripts/ccv.js"></script>
-<script type="text/javascript" src="./scripts/face.js"></script>
-<style>
-	video {
-		display: none;
-		
-	}
-</style>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="ビリーテスト">
+	<meta property="og:type" content="article">
+	<meta property="og:image" content="https://utzmie.github.io/video-tracking-test/face-billy.png">
+	<meta property="og:url" content="https://utzmie.github.io/video-tracking-test/">
+	<meta property="og:description" content="Webカメラテスト">
+	<meta property="og:site_name" content="utzmie">
+	<meta property="og:locale" content="ja_JP">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="ビリーテスト">
+	<meta name="twitter:description" content="Webカメラテスト">
+	<meta name="twitter:image" content="https://utzmie.github.io/video-tracking-test/face-billy.png">
+	<title>ビリーテスト</title>
+	<script type="text/javascript" src="./scripts/ccv.js"></script>
+	<script type="text/javascript" src="./scripts/face.js"></script>
+	<style>
+		video {
+			display: none;
+		}
+	</style>
 </head>
 <body>
 <h1>PCのWebカメラで顔認証＋ビリー合成</h1>
@@ -19,7 +31,7 @@
 	<li>顔が認識されるとビリーが登場します。</li>
 	<li>映像がサーバーに送信されるわけじゃないので安心して使ってください。</li>
 	<li>メガネの光の反射とかが原因で認識されないことがあるぞ</li>
-	<li>なんかよくわからんけど、ほぼ下からパクりました。<br>
+	<li>なんかよくわからんけど、ほぼ下からそのままパクりました。<br>
 		http://alumi.hateblo.jp/entry/2012/03/22/163845</li>
 </ul>
 
@@ -44,11 +56,9 @@
 			video: true,
 			audio: false,
 		}).then(function (stream) { // success
-
 			localStream = stream;
 			input.src = window.URL.createObjectURL(localStream);
 			setInterval(draw, 300);
-
 		}).catch(function (error) { // error
 			alert("onFailedStream");
 		});
@@ -80,12 +90,10 @@
 				"min_neighbors" : 1
 			}
 		);
-	
 		for(var i=0;i < comp.length;i++) {
 			context2.drawImage(image, comp[i].x-30, comp[i].y-30, comp[i].width+60, comp[i].height+60);
 		}
 	}
-
 	setTimeout(initialize, 1);
 
 </script>
